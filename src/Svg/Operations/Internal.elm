@@ -50,6 +50,7 @@ module Svg.Operations.Internal
         , sequential
         , concurrent
         , render
+        , hash
         )
 
 {-| A wrapper around SVG's primitive filter operations

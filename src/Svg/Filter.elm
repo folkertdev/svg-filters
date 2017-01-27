@@ -38,7 +38,10 @@ toElement (Filter attributes { id, filterUnits } operation) =
 
 useFilter : Filter msg -> Attribute msg
 useFilter (Filter _ { id } _) =
-    Html.Attributes.style [ ( "filter", "url(#" ++ id ++ ")" ) ]
+    Html.Attributes.style
+        [ ( "filter", "url(#" ++ id ++ ")" )
+        , ( "-webkit-filter", "url(#" ++ id ++ ")" )
+        ]
 
 
 singleton x =

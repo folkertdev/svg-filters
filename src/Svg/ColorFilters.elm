@@ -2,6 +2,7 @@ module Svg.ColorFilters exposing (..)
 
 import Svg.Operations exposing (colorMatrix)
 import Svg.Operations.Internal as Internal exposing (ColorMatrixData(..), FilterOperation)
+import Svg.Attributes exposing (width, height, x, y)
 
 
 {-| Takes the red, green and blue components to calculate a luminance value, that is used for the alpha channel.
@@ -31,6 +32,7 @@ invert =
 
 
 {-| -}
+greyscale : FilterOperation msg -> FilterOperation msg
 greyscale =
     -- taken from https://medium.com/square-corner-blog/welcome-to-the-color-matrix-64d112e3f43d#.splu7ntmr
     let
@@ -41,7 +43,7 @@ greyscale =
             , [ 0, 0, 0, 0, 1 ]
             ]
     in
-        colorMatrix matrix
+        Internal.colorMatrix [] (Matrix <| List.concat matrix)
 
 
 monochrome =
@@ -148,21 +150,31 @@ contrast v =
         colorMatrix matrix
 
 
-matrix =
-    [ [ 1 + v, 0, 0, 0, 0 ]
-    , [ 0, 1, 0, 0, 0 ]
-    , [ 0, 0, 1 - v, 0, 0 ]
-    , [ 0, 0, 0, 1, 0 ]
-    ]
-matrix =
-    [ [ 1 + v, 0, 0, 0, 0 ]
-    , [ 0, 1, 0, 0, 0 ]
-    , [ 0, 0, 1 + v, 0, 0 ]
-    , [ 0, 0, 0, 1, 0 ]
-    ]
+temperature v =
+    let
+        matrix =
+            [ [ 1 + v, 0, 0, 0, 0 ]
+            , [ 0, 1, 0, 0, 0 ]
+            , [ 0, 0, 1 - v, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
 
 
-threshold =
+tint v =
+    let
+        matrix =
+            [ [ 1 + v, 0, 0, 0, 0 ]
+            , [ 0, 1, 0, 0, 0 ]
+            , [ 0, 0, 1 + v, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+threshold v =
     let
         lum =
             { r = 0.3086, g = 0.6094, b = 0.082 }
@@ -186,6 +198,90 @@ protanomaly =
             [ [ 0.817, 0.183, 0, 0, 0 ]
             , [ 0.333, 0.667, 0, 0, 0 ]
             , [ 0, 0.125, 0.875, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+deuteranomaly =
+    let
+        matrix =
+            [ [ 0.8, 0.2, 0, 0, 0 ]
+            , [ 0.258, 0.742, 0, 0, 0 ]
+            , [ 0, 0.142, 0.858, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+tritanomaly =
+    let
+        matrix =
+            [ [ 0.967, 0.033, 0, 0, 0 ]
+            , [ 0, 0.733, 0.267, 0, 0 ]
+            , [ 0, 0.183, 0.817, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+protanopia =
+    let
+        matrix =
+            [ [ 0.567, 0.433, 0, 0, 0 ]
+            , [ 0.558, 0.442, 0, 0, 0 ]
+            , [ 0, 0.242, 0.758, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+deuteranopia =
+    let
+        matrix =
+            [ [ 0.625, 0.375, 0, 0, 0 ]
+            , [ 0.7, 0.3, 0, 0, 0 ]
+            , [ 0, 0.3, 0.7, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+tritanopia =
+    let
+        matrix =
+            [ [ 0.95, 0.05, 0, 0, 0 ]
+            , [ 0, 0.433, 0.567, 0, 0 ]
+            , [ 0, 0.475, 0.525, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+achromatopsia =
+    let
+        matrix =
+            [ [ 0.299, 0.587, 0.114, 0, 0 ]
+            , [ 0.299, 0.587, 0.114, 0, 0 ]
+            , [ 0.299, 0.587, 0.114, 0, 0 ]
+            , [ 0, 0, 0, 1, 0 ]
+            ]
+    in
+        colorMatrix matrix
+
+
+achromatomaly =
+    let
+        matrix =
+            [ [ 0.618, 0.32, 0.062, 0, 0 ]
+            , [ 0.163, 0.775, 0.062, 0, 0 ]
+            , [ 0.163, 0.32, 0.516, 0, 0 ]
             , [ 0, 0, 0, 1, 0 ]
             ]
     in
