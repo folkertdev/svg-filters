@@ -5,7 +5,7 @@ import Svg.Attributes exposing (..)
 import Html.Attributes
 import Html
 import String
-import Svg.Operations exposing (..)
+import Svg.Operations.Internal exposing (..)
 
 
 type Filter msg
@@ -33,7 +33,7 @@ toElement (Filter attributes { id, filterUnits } operation) =
                 ObjectBoundingBox ->
                     "objectBoundingBox"
     in
-        Svg.filter (attributes ++ [ Svg.Attributes.id id, Svg.Attributes.filterUnits unit ]) (Svg.Operations.render operation)
+        Svg.filter (attributes ++ [ Svg.Attributes.id id, Svg.Attributes.filterUnits unit ]) (Svg.Operations.Internal.render operation)
 
 
 useFilter : Filter msg -> Attribute msg
