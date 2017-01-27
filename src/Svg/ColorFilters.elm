@@ -1,5 +1,8 @@
 module Svg.ColorFilters exposing (..)
 
+{-| Mostly taken from https://github.com/skratchdot/color-matrix/blob/master/lib/filters.js
+-}
+
 import Svg.Operations exposing (colorMatrix)
 import Svg.Operations.Internal as Internal exposing (ColorMatrixData(..), FilterOperation)
 import Svg.Attributes exposing (width, height, x, y)
